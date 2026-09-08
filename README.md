@@ -499,15 +499,6 @@ git push origin feature/your-feature
 
 ---
 
-## 📚 References
-
-This project is based on the end-to-end Machine Learning project repository by **Krish Naik**.
-
-Original repository:
-
-https://github.com/krishnaik06/mlproject
-
----
 
 ## ⭐ Support
 
