@@ -1,7 +1,7 @@
 import os
 import sys
 
-from sklearn.base import r2_score
+from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 import dill
 import numpy as np

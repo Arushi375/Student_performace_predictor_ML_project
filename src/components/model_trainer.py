@@ -31,12 +31,10 @@ class ModelTrainer:
     def initiate_model_trainer(self,train_array,test_array,preprocessor_path):
         try:
             logging.info("spliting training and test input data")
-            X_train,y_train,X_test,y_test=(
-                train_array[:,:,-1],
-                train_array[:,-1],
-                test_array[:,:,-1],
-                test_array[:,-1]
-            )
+            X_train = train_array[:, :-1]
+            y_train = train_array[:, -1]
+            X_test = test_array[:, :-1]
+            y_test = test_array[:, -1]
             models = {
                 "Random Forest": RandomForestRegressor(),
                 "Decision Tree": DecisionTreeRegressor(),
@@ -48,7 +46,7 @@ class ModelTrainer:
             }
             params={
                 "Decision Tree": {
-                    'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    'criterion':['squared_error','absolute_error', 'poisson'],
                     # 'splitter':['best','random'],
                     # 'max_features':['sqrt','log2'],
                 },
@@ -83,14 +81,21 @@ class ModelTrainer:
                 }
                 
             }
-            model_report:dict=evaluate_models(X_test=X_test,y_test=y_test,X_train=X_train,y_train=y_train,
-                                             models=models,param=params)
+            model_report:dict=evaluate_models(X_test=X_test,
+                                              y_test=y_test,
+                                              X_train=X_train,
+                                              y_train=y_train,
+                                             models=models,
+                                             param=params)
             # to get best model score from dict 
-            best_model_score=max(sorted(model_report.keys()))
-            # to get best model name from dict 
-            best_model_name=list(model_report.keys())[
-                list(model_report.values()).index(best_model_score)
-            ]
+                
+            best_model_score = max(model_report.values())
+
+            best_model_name = max(
+                    model_report,
+                    key=model_report.get
+            )
+
             best_model=models[best_model_name]
             
             if best_model_score<0.6:

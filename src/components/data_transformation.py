@@ -12,11 +12,10 @@ from src.exception import CustomException
 from src.logger import logging
 from src.utils import save_object
 
-from src.components.data_transformation import DataTransformation,DataTransformationConfig
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file=os.path.join('artifacts',"preprocessor.pkl")
+    preprocessor_obj_file_path=os.path.join('artifacts',"preprocessor.pkl")
     
 class DataTransformation:
     def __init__(self):
@@ -39,11 +38,11 @@ class DataTransformation:
                     ("scaler",StandardScaler())
                 ]
             )
-            cat_pipelines=Pipeline(
+            cat_pipelines = Pipeline(
                 steps=[
-                    ("imputer",SimpleImputer(strategy="most_frequent"))
-                    ("one_hot_encoder",OneHotEncoder())
-                    ("scaler",StandardScaler())
+                    ("imputer", SimpleImputer(strategy="most_frequent")),
+                    ("one_hot_encoder", OneHotEncoder()),
+                    ("scaler", StandardScaler(with_mean=False))
                 ]
             )
             logging.info("Numerical columns standard scaling completed")
@@ -73,10 +72,10 @@ class DataTransformation:
             target_column_name="math_score"
             numerical_columns=['writing_score','reading_score']
             
-            input_feature_train_df=test_df.drop(columns=[target_column_name],axis=1)
+            input_feature_train_df=train_df.drop(columns=[target_column_name])
             target_feature_train_df=train_df[target_column_name]
             
-            input_feature_test_df=test_df.drop(columns=[target_column_name],axis=1)
+            input_feature_test_df=test_df.drop(columns=[target_column_name])
             target_feature_test_df=test_df[target_column_name]
             
             logging.info(
